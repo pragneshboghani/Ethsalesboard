@@ -1,0 +1,425 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API Documentation",
+    "description": "API documentation for the application.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5001",
+  "servers": [
+    {
+      "url": "http://localhost:5001",
+      "description": "Local base url"
+    }
+  ],
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Company",
+      "description": "APIs for managing companies"
+    },
+    {
+      "name": "Developer",
+      "description": "APIs for managing developers"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {},
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/company/category-list": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/company/list": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoriesId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/company/file": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/developer/": {
+      "post": {
+        "tags": [
+          "Developer"
+        ],
+        "description": "Endpoint to add a new developer.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Developer data",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/developerSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Developer added successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Developer created successfully."
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/developerSchema"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Developer created successfully."
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/developerSchema"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse500"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse500"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Developer"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/developer/developerList": {
+      "get": {
+        "tags": [
+          "Developer"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/developer/profile": {
+      "get": {
+        "tags": [
+          "Developer"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/developer/editProfile": {
+      "put": {
+        "tags": [
+          "Developer"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "developerSchema": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "mobileCode": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "resume": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fileName": {
+                  "type": "string"
+                },
+                "fileURL": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "fileName",
+                "fileURL"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "documentType": {
+                  "type": "string"
+                },
+                "fileName": {
+                  "type": "string"
+                },
+                "fileURL": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "documentType",
+                "fileName",
+                "fileURL"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "education": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "instituteName": {
+                  "type": "string"
+                },
+                "degree": {
+                  "type": "string"
+                },
+                "fieldOfStudy": {
+                  "type": "string"
+                },
+                "startYear": {
+                  "type": "string"
+                },
+                "endYear": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "instituteName",
+                "degree",
+                "fieldOfStudy",
+                "startYear",
+                "endYear"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "experience": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "companyName": {
+                  "type": "string"
+                },
+                "jobTitle": {
+                  "type": "string"
+                },
+                "startDate": {
+                  "type": "string"
+                },
+                "endDate": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "companyName",
+                "jobTitle",
+                "startDate",
+                "endDate"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "profile": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fileName": {
+                  "type": "string"
+                },
+                "fileURL": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "fileName",
+                "fileURL"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "fullName",
+          "email",
+          "mobileCode",
+          "mobileNumber"
+        ],
+        "additionalProperties": false
+      },
+      "errorResponse400": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 400
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid request parameters."
+          }
+        }
+      },
+      "errorResponse500": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 500
+          },
+          "message": {
+            "type": "string",
+            "example": "Internal server error."
+          }
+        }
+      }
+    }
+  }
+}

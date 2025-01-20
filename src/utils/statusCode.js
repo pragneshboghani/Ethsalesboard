@@ -1,0 +1,9 @@
+exports.SUCCESS = 200
+exports.CREATE_RESOURCE = 201
+exports.BAD_REQUEST = 400
+exports.FORBIDDEN = 403
+exports.NOT_FOUND = 404
+exports.CONFLICT = 409
+exports.TOO_MANY_REQUEST = 429
+exports.INTERNAL_SERVER_ERROR = 500
+exports.BAD_GATEWAY = 502
