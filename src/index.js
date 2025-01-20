@@ -6,7 +6,7 @@ import swaggerDocument from './swagger/swagger-output.json' assert { type: 'json
 const app = express();
 import cors from "cors";
 import bodyParser from "body-parser"
-const port = process.env.PORT ?? 5001;
+const port = process.env.PORT ?? 3101;
 import { connectMongo } from './config/dbConnection.js';
 import routes from "./routes/index.routes.js"
  
