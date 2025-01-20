@@ -32,6 +32,10 @@ const doc = {
       url: "http://localhost:5001",
       description: "Local base url",
     },
+    {
+      url: "http://http://192.168.1.180:3101",
+      description: "Live base url",
+    },
   ],
   tags: [
     {

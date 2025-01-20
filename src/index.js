@@ -23,11 +23,11 @@ app.options("*", cors());
 
 // ****************Swagger UI Start****************
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use("/", (req, res) => {
-  res.json({
-    message: "Welcome to the API",
-  });
-});
+// app.use("/", (req, res) => {
+//   res.json({
+//     message: "Welcome to the API",
+//   });
+// });
 // ****************Swagger UI End****************
 
 // Body Parser Middleware
