@@ -1,14 +1,25 @@
 import express from "express";
-
-import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "./swagger/swagger-output.json" assert { type: "json" };
-
-const app = express();
 import cors from "cors";
 import bodyParser from "body-parser";
-const port = process.env.PORT ?? 3101;
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger/swagger-output.json" assert { type: "json" };
 import { connectMongo } from "./config/dbConnection.js";
 import routes from "./routes/index.routes.js";
+
+const app = express();
+const port = process.env.PORT ?? 3101;
+
+// CORS Middleware
+app.use(
+  cors({
+    origin: "*", // Allow all origins
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  })
+);
+
+// Handle preflight requests
+app.options("*", cors());
 
 // ****************Swagger UI Start****************
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -17,15 +28,9 @@ app.use("/", (req, res) => {
     message: "Welcome to the API",
   });
 });
-
 // ****************Swagger UI End****************
 
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-
+// Body Parser Middleware
 app.use(express.json());
 app.use(
   bodyParser.urlencoded({
@@ -39,21 +44,22 @@ app.use(
   })
 );
 
+// CORS error handling middleware
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError) {
-    return res.badRequest({
+    return res.status(400).json({
       message: "Invalid JSON Data",
     });
   }
   next();
 });
 
+// API Routes
 app.use("/api", routes);
 
 async function initialize() {
   try {
     await connectMongo();
-
     app.listen(port, () => {
       console.log(`Listening on: ${port}`);
     });
