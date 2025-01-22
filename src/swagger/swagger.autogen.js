@@ -22,18 +22,18 @@ const doc = {
     description: "API documentation for the application.",
     version: "1.0.0",
   },
-  host: "localhost:5001",
+  host: ["localhost:3031"],
   basePath: "/api",
   schemes: ["http", "https"],
   consumes: ["application/json", "multipart/form-data"],
   produces: ["application/json"],
   servers: [
     {
-      url: "http://localhost:5001",
+      url: "http://localhost:3101",
       description: "Local base url",
     },
     {
-      url: "http://http://192.168.1.180:3101",
+      url: "http://192.168.1.180:3101",
       description: "Live base url",
     },
   ],

@@ -34,7 +34,7 @@ const HomePage: React.FC = () => {
             <Card
               key={_id}
               className="shadow border border-gray-200 cursor-pointer"
-              onClick={() => navigate(`/companies/${_id}`)}>
+              onClick={() => navigate(`/companies/${subcategory}`)}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg font-bold tracking-tight">
                   {_id}

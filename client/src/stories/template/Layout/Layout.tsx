@@ -34,7 +34,7 @@ const Layout: React.FC = () => {
   }, []);
 
   return (
-    <div className="h-screen">
+    <div className="h-screen w-full">
       <div className="flex">
         <SidebarProvider>
           <CustomSidebar />

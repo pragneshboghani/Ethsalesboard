@@ -13,21 +13,23 @@ const initialState: ICompanyState = {
   categoriesId: null,
 };
 
-// Fetch companies with pagination and filtering
+// Fetch companies  with pagination and filtering
 export const fetchCompanies = createAsyncThunk<
   ICompanyResponse,
-  { categoriesId: string; size?: number; page?: number },
+  { categoriesId: string; size?: number; page?: number ,searchString:string},
   { state: RootState }
 >(
   "companies/fetchCompanies",
-  async ({ categoriesId, size = 100, page = 1 }, { rejectWithValue }) => {
+  async ({ categoriesId, size = 100, page = 1, searchString }, { rejectWithValue }) => {
     try {
+      // console.log("companies/fetchCompanies", page, size);
       const response = await CompanyApis.company_list({
         categoriesId,
         size,
         page,
+        searchString
       });
-      console.log("response", response);
+      // console.log("response", response);
       return {
         metadata: response.data.metadata || [],
         totalCount: response.data.totalCount || 0,
@@ -44,14 +46,17 @@ const companySlice = createSlice({
   name: "companies",
   initialState,
   reducers: {
-    setCategoryId: (state, action: PayloadAction<string>) => {
-      state.categoriesId = action.payload;
-    },
-    setPage: (state, action: PayloadAction<number>) => {
+    pageChange: (state, action: PayloadAction<number>) => {
       state.page = action.payload;
     },
     setSize: (state, action: PayloadAction<number>) => {
       state.size = action.payload;
+    },
+    resetState: (state) => {
+      state.page = 1;
+      state.companies = [];
+      state.totalCount = 0;
+      state.categoriesId = null;
     },
   },
   extraReducers: (builder) => {
@@ -62,7 +67,7 @@ const companySlice = createSlice({
           state.loading = false;
           state.error = null;
           state.totalCount = action.payload.totalCount;
-          state.companies = action.payload.metadata;
+          state.companies = [...state.companies, ...action.payload.metadata];
         }
       )
       .addCase(fetchCompanies.rejected, (state, action) => {
@@ -72,5 +77,5 @@ const companySlice = createSlice({
   },
 });
 
-export const { setCategoryId, setPage, setSize } = companySlice.actions;
+export const { pageChange, setSize, resetState } = companySlice.actions;
 export default companySlice.reducer;

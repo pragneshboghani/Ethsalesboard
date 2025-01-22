@@ -16,11 +16,13 @@ export default defineConfig({
         target: 'http://192.168.1.180:3101', // Replace with your API server URL
         changeOrigin: true,
         secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
   resolve: {
     alias: {
+      // eslint-disable-next-line no-undef
       "@": path.resolve(__dirname, "./src"),
     },
   },

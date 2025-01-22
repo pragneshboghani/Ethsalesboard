@@ -47,7 +47,7 @@ const TableFooter = React.forwardRef<
       className
     )}
     {...props}
-  />
+  />  
 ))
 TableFooter.displayName = "TableFooter"
 

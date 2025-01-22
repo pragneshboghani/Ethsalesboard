@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 
+// import LOGO from "";
 // Menu items.
 const items = [
   {
@@ -37,7 +38,7 @@ const CustomSidebar = () => {
           <div className="mr-4 mt-4 hidden md:flex w-full justify-center">
             <img
               className="fit-picture"
-              src="src/assets/images/logo.webp"
+              src={"/logo.webp"}
               alt="Grapefruit slice atop a pile of other slices"
             />
           </div>
@@ -47,7 +48,9 @@ const CustomSidebar = () => {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title} className="flex items-center">
                   <SidebarMenuButton asChild>
-                    <div className="cursor-pointer flex justify-center font-bold" onClick={() => navigate(item.url)}>
+                    <div
+                      className="cursor-pointer flex justify-center font-bold"
+                      onClick={() => navigate(item.url)}>
                       <item.icon />
                       <span>{item.title}</span>
                     </div>
