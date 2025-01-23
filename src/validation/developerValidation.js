@@ -1,23 +1,13 @@
 import Joi from 'joi';
 
 export const developerValidationSchema = Joi.object({
-    fullName: Joi.string().required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
     email: Joi.string().email().required(),
     mobileCode: Joi.string().required(),
     mobileNumber: Joi.string().required(),
-    resume: Joi.array().items(
-        Joi.object({
-            fileName: Joi.string().required(),
-            fileURL: Joi.string().uri().required()
-        }).optional()
-    ),
-    documents: Joi.array().items(
-        Joi.object({
-            documentType: Joi.string().required(),
-            fileName: Joi.string().required(),
-            fileURL: Joi.string().uri().required()
-        }).optional()
-    ),
+    currentPosition: Joi.string().required(),
+    expeditedSalary: Joi.string().required(),
     education: Joi.array().items(
         Joi.object({
             instituteName: Joi.string().required(),
@@ -33,7 +23,12 @@ export const developerValidationSchema = Joi.object({
             jobTitle: Joi.string().required(),
             startDate: Joi.string().required(),
             endDate: Joi.string().required(),
-            description: Joi.string().optional().allow("")
+            description: Joi.string().optional().allow(""),
+            salary: Joi.string().optional().allow(""),
+            resignationDate: Joi.string().optional().allow(""),
+            resignReason: Joi.string().optional().allow(""),
+            noticePeriod: Joi.string().optional().allow(""),
+            
         }),
     ).optional(),
     profile: Joi.array().items(

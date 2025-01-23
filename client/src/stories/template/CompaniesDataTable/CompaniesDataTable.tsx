@@ -14,6 +14,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  getExpandedRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -671,6 +672,8 @@ export function CompaniesDataTable({ id }: CompaniesDataTableProps) {
     manualPagination: true,
     pageCount: totalPages,
     onColumnPinningChange: setColumnPinning,
+
+    getExpandedRowModel: getExpandedRowModel(),
     state: {
       sorting,
       columnFilters,

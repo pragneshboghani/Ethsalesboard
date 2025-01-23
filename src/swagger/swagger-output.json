@@ -101,6 +101,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "searchString",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -151,12 +158,30 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
+                    "type": {
                       "type": "string",
-                      "example": "Developer created successfully."
+                      "example": "object"
                     },
-                    "data": {
-                      "$ref": "#/components/schemas/developerSchema"
+                    "properties": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "example": {
+                              "type": "string",
+                              "example": "Developer created successfully."
+                            }
+                          }
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/developerSchema"
+                        }
+                      }
                     }
                   },
                   "xml": {
@@ -168,12 +193,30 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
+                    "type": {
                       "type": "string",
-                      "example": "Developer created successfully."
+                      "example": "object"
                     },
-                    "data": {
-                      "$ref": "#/components/schemas/developerSchema"
+                    "properties": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "example": {
+                              "type": "string",
+                              "example": "Developer created successfully."
+                            }
+                          }
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/developerSchema"
+                        }
+                      }
                     }
                   },
                   "xml": {
@@ -221,8 +264,11 @@
         ],
         "description": "",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -234,34 +280,113 @@
         ],
         "description": "",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/developer/profile": {
-      "get": {
-        "tags": [
-          "Developer"
-        ],
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/developer/editProfile": {
+    "/developer/{id}": {
       "put": {
         "tags": [
           "Developer"
         ],
-        "description": "",
+        "description": "Endpoint to fully update a developer.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "64ab2cd098ab3e12345f6789"
+                }
+              }
+            },
+            "description": "Unique identifier of the developer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Complete developer data",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/developerSchema"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Developer"
+        ],
+        "description": "Endpoint to partially update a developer.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "example": {
+                  "type": "string",
+                  "example": "64ab2cd098ab3e12345f6789"
+                }
+              }
+            },
+            "description": "Unique identifier of the developer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Fields to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/developerSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -272,7 +397,10 @@
       "developerSchema": {
         "type": "object",
         "properties": {
-          "fullName": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
             "type": "string"
           },
           "email": {
@@ -285,47 +413,11 @@
           "mobileNumber": {
             "type": "string"
           },
-          "resume": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "fileName": {
-                  "type": "string"
-                },
-                "fileURL": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "fileName",
-                "fileURL"
-              ],
-              "additionalProperties": false
-            }
+          "currentPosition": {
+            "type": "string"
           },
-          "documents": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "documentType": {
-                  "type": "string"
-                },
-                "fileName": {
-                  "type": "string"
-                },
-                "fileURL": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "documentType",
-                "fileName",
-                "fileURL"
-              ],
-              "additionalProperties": false
-            }
+          "expeditedSalary": {
+            "type": "string"
           },
           "education": {
             "type": "array",
@@ -377,6 +469,18 @@
                 },
                 "description": {
                   "type": "string"
+                },
+                "salary": {
+                  "type": "string"
+                },
+                "resignationDate": {
+                  "type": "string"
+                },
+                "resignReason": {
+                  "type": "string"
+                },
+                "noticePeriod": {
+                  "type": "string"
                 }
               },
               "required": [
@@ -409,10 +513,13 @@
           }
         },
         "required": [
-          "fullName",
+          "firstName",
+          "lastName",
           "email",
           "mobileCode",
-          "mobileNumber"
+          "mobileNumber",
+          "currentPosition",
+          "expeditedSalary"
         ],
         "additionalProperties": false
       },

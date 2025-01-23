@@ -4,7 +4,11 @@ import {
 } from "../utils/constant.js";
 
 export const developerSchema = mongoose.Schema({
-    fullName: {
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
         type: String,
         required: true
     },
@@ -24,15 +28,9 @@ export const developerSchema = mongoose.Schema({
     currentPosition: {
         type: String,
     },
-    resume: [{
-        fileName: String,
-        fileURL: String,
-    }],
-    documents: [{
-        documentType: String,
-        fileName: String,
-        fileURL: String,
-    }],
+    expeditedSalary:{
+        type: String,
+    },
     education: [{
         instituteName: String,
         degree: String,
@@ -46,6 +44,10 @@ export const developerSchema = mongoose.Schema({
         startDate: String,
         endDate: String,
         description: String,
+        salary:String,
+        resignationDate:String,
+        resignReason:String,
+        noticePeriod:String
     }],
     profile: [{
         fileName: String,
@@ -60,4 +62,4 @@ export const developerSchema = mongoose.Schema({
     timestamps: true
 })
 
-export const DeveloperModel = mongoose.model('developer', developerSchema);
+export const DeveloperModel = mongoose.model('developers', developerSchema);

@@ -6,9 +6,12 @@ import mongoose from "mongoose";
 
 export const connectMongo = async () => {
   try {
-    return await mongoose.connect(
+    const dbConnection = await mongoose.connect(
       "mongodb+srv://pritkumargodhani:Dt6J7Cg3hZynMUQg@cluster0.cnvfk.mongodb.net/eth_bot"
     );
+
+    console.log("Mongodb Connected");
+    return dbConnection;
   } catch (error) {
     console.error(
       `Unable to connect database: ${JSON.stringify(error.message)}`
