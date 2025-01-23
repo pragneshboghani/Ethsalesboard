@@ -1,4 +1,6 @@
 import * as React from "react";
+import { CalendarIcon, Twitter } from "lucide-react";
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -56,6 +58,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+// import {
+//   Avatar,
+//   AvatarFallback,
+//   AvatarImage,
+// } from "@/components/ui/avatar";
+
+// import { Button } from "@/components/ui/button";
+
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+
 import { Console } from "console";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCompanies, resetState } from "@/redux/slices/companySlice";
@@ -127,7 +144,7 @@ export const columns: ColumnDef<ICompany>[] = [
   {
     accessorKey: "location",
     header: "Location",
-    cell: ({ row }) => <div>{row.getValue("location")}</div>,
+    cell: ({ row }) => <div className="min-w-[120px]">{row.getValue("location")}</div>,
   },
   {
     accessorKey: "totalEarning",
@@ -137,7 +154,7 @@ export const columns: ColumnDef<ICompany>[] = [
   {
     accessorKey: "hrRate",
     header: "Hourly Rate",
-    cell: ({ row }) => <div>{row.getValue("hrRate")}</div>,
+    cell: ({ row }) => <div className="min-w-[90px]">{row.getValue("hrRate")}</div>,
   },
   {
     accessorKey: "employees",
@@ -147,12 +164,26 @@ export const columns: ColumnDef<ICompany>[] = [
   {
     accessorKey: "address",
     header: "Address",
-    cell: ({ row }) => <div>{row.getValue("address")}</div>,
+    cell: ({ row }) => (
+      <div className=" line-clamp-1 max-w-[150px] overflow-hidden">
+        <HoverCard openDelay={150} closeDelay={150}>
+            <HoverCardTrigger asChild>
+              <p className="cursor-pointer">{row.getValue("address")}</p>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80" side="bottom" align="start" sideOffset={4}>
+              <div>
+                {row.getValue("address")}
+              </div>
+            </HoverCardContent>
+        </HoverCard>
+
+      </div>
+    )
   },
   {
     accessorKey: "phone_number",
     header: "Phone Number",
-    cell: ({ row }) => <div>{row.getValue("phone_number")}</div>,
+    cell: ({ row }) => <div className="min-w-[120px]">{row.getValue("phone_number")}</div>,
   },
   {
     accessorKey: "business",
@@ -164,16 +195,36 @@ export const columns: ColumnDef<ICompany>[] = [
     header: "Mail",
     cell: ({ row }) => {
       const mails = row.getValue("mail") as string[];
+    
       return (
         <div className="flex flex-col gap-1">
-          {mails.length > 0 ? (
-            mails.map((_m) => <span>{_m}</span>)
-          ) : (
-            <OctagonX />
-          )}
-        </div>
+        {mails.length > 0 ? (
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              {/* Display the first mail and add a 'more' option if there are multiple mails */}
+              <span className="underline cursor-pointer">
+                {mails[0]}
+                {mails.length > 1 && (
+                  <span className="ml-2 text-sm font-bold text-green-800">+{mails.length - 1} more</span>
+                )}
+              </span>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80">
+              {/* List all mails inside the pop-up */}
+              <div className="flex flex-col gap-1">
+                {mails.map((mail, index) => (
+                  <span key={index}>{mail}</span>
+                ))}
+              </div>
+            </HoverCardContent>
+          </HoverCard>
+        ) : (
+          <OctagonX color="red" />
+        )}
+      </div>
+      
       );
-    },
+    },    
   },
   {
     accessorKey: "categories",
@@ -184,6 +235,21 @@ export const columns: ColumnDef<ICompany>[] = [
         subcategory: string;
       }[];
       return (
+        <>
+       <div className="min-w-[222px]">
+  {categories.length > 0 && (
+    <HoverCard>
+      <HoverCardTrigger asChild>
+        {/* Replace <Button> with <p> tag */}
+        <p className="cursor-pointer">
+          {categories[0].category} - {categories[0].subcategory}
+          {categories.length > 1 && (
+            <span className="ml-2 text-sm font-bold text-green-800">+{categories.length - 1} more</span>
+          )}
+        </p>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-80">
+        {/* List all categories in the popup */}
         <div>
           {categories.map((cat, index) => (
             <div key={index}>
@@ -191,105 +257,205 @@ export const columns: ColumnDef<ICompany>[] = [
             </div>
           ))}
         </div>
+      </HoverCardContent>
+    </HoverCard>
+  )}
+</div>
+
+
+        
+        </>
       );
     },
   },
   {
     accessorKey: "LinkedIn",
     header: "LinkedIn",
-    cell: ({ row }) => <div>{row.getValue("LinkedIn") || "Not found"}</div>,
+    cell: ({ row }) => <div className="min-w-[80px]">{row.getValue("LinkedIn") || "Not found"}</div>,
   },
   {
     accessorKey: "Facebook",
     header: "Facebook",
-    cell: ({ row }) => <div>{row.getValue("Facebook") || "Not found"}</div>,
+    cell: ({ row }) => <div className="min-w-[80px]">{row.getValue("Facebook") || "Not found"}</div>,
   },
   {
     accessorKey: "Twitter",
     header: "Twitter",
-    cell: ({ row }) => <div>{row.getValue("Twitter") || "Not found"}</div>,
+    cell: ({ row }) => <div className="min-w-[80px]">{row.getValue("Twitter") || "Not found"}</div>,
   },
   {
     accessorKey: "Instagram",
     header: "Instagram",
-    cell: ({ row }) => <div>{row.getValue("Instagram") || "Not found"}</div>,
+    cell: ({ row }) => <div className="min-w-[80px]">{row.getValue("Instagram") || "Not found"}</div>,
   },
   {
     accessorKey: "webFacebook",
     header: "Facebook Links",
     cell: ({ row }) => {
       const links = row.getValue("webFacebook") as string[];
+    
       return (
-        <div>
-          {links.map((link, index) => (
-            <div key={index}>
-              <a href={link} target="_blank" rel="noopener noreferrer">
-                <Facebook />
-              </a>
-            </div>
-          ))}
+        <div className="min-w-[60px] flex justify-center">
+          {links.length > 0 ? (
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                {/* Display the first link and add a 'more' option if there are multiple links */}
+                <div className="flex flex-col justify-center items-center">
+                  <a href={links[0]} target="_blank" rel="noopener noreferrer">
+                    <Facebook />
+                  </a>
+                  {links.length > 1 && (
+                    <p className=" block text-sm font-bold text-green-800">+{links.length - 1} more</p>
+                  )}
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                {/* List all links inside the pop-up */}
+                <div className="flex flex-col gap-1">
+                  {links.map((link, index) => (
+                    <a key={index} href={link} target="_blank" rel="noopener noreferrer">
+                      <Facebook />
+                    </a>
+                  ))}
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          ) : (
+            <OctagonX color="red" />
+          )}
         </div>
       );
     },
   },
+
+
+ 
+
+
   {
     accessorKey: "webInstagram",
     header: "Instagram Links",
     cell: ({ row }) => {
       const links = row.getValue("webInstagram") as string[];
+    
       return (
-        <div>
-          {links.map((link, index) => (
-            <div key={index}>
-              <a href={link} target="_blank" rel="noopener noreferrer">
-                <Instagram />
-              </a>
-            </div>
-          ))}
+        <div className="min-w-[60px] flex justify-center">
+          {links.length > 0 ? (
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                {/* Display the first link and add a 'more' option if there are multiple links */}
+                <div className="flex flex-col justify-center items-center">
+                  <a href={links[0]} target="_blank" rel="noopener noreferrer">
+                  <Instagram />
+                  </a>
+                  {links.length > 1 && (
+                    <p className=" block text-sm font-bold text-green-800">+{links.length - 1} more</p>
+                  )}
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                {/* List all links inside the pop-up */}
+                <div className="flex flex-col gap-1">
+                  {links.map((link, index) => (
+                     <a href={link} target="_blank" rel="noopener noreferrer">
+                  <Instagram />
+                </a>
+                  ))}
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          ) : (
+            <OctagonX color="red" />
+          )}
         </div>
       );
     },
   },
+
+
+
+
+
+  
   {
     accessorKey: "webLinkedin",
     header: "LinkedIn Links",
     cell: ({ row }) => {
       const links = row.getValue("webLinkedin") as string[];
-      return links.length > 0 ? (
-        <div>
-          {links.map((link, index) => (
-            <div key={index}>
-              <a href={link} target="_blank" rel="noopener noreferrer">
-                <Linkedin />
-              </a>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div>
-          <OctagonX />
+    
+      return (
+        <div className="min-w-[80px] flex justify-center">
+          {links.length > 0 ? (
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                {/* Display the first link and add a 'more' option if there are multiple links */}
+                <div className="flex flex-col justify-center items-center">
+                  <a href={links[0]} target="_blank" rel="noopener noreferrer">
+                  <Linkedin />
+                  </a>
+                  {links.length > 1 && (
+                    <p className=" block text-sm font-bold text-green-800">+{links.length - 1} more</p>
+                  )}
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                {/* List all links inside the pop-up */}
+                <div className="flex flex-col gap-1">
+                  {links.map((link, index) => (
+                     <a href={link} target="_blank" rel="noopener noreferrer">
+                 <Linkedin />
+                </a>
+                  ))}
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          ) : (
+            <OctagonX color="red" />
+          )}
         </div>
       );
     },
   },
+
+
+ 
+
+
   {
     accessorKey: "webTwitter",
     header: "Twitter Links",
     cell: ({ row }) => {
       const links = row.getValue("webTwitter") as string[];
-      return links.length > 0 ? (
-        <div>
-          {links.map((link, index) => (
-            <div key={index}>
-              <a href={link} target="_blank" rel="noopener noreferrer">
-                Twitter
-              </a>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div>
-          <OctagonX />
+    
+      return (
+        <div className="min-w-[80px] flex justify-center">
+          {links.length > 0 ? (
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                {/* Display the first link and add a 'more' option if there are multiple links */}
+                <div className="flex flex-col justify-center items-center">
+                  <a href={links[0]} target="_blank" rel="noopener noreferrer">
+                  <Twitter />
+                  </a>
+                  {links.length > 1 && (
+                    <p className=" block text-sm font-bold text-green-800">+{links.length - 1} more</p>
+                  )}
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                {/* List all links inside the pop-up */}
+                <div className="flex flex-col gap-1">
+                  {links.map((link, index) => (
+                     <a href={link} target="_blank" rel="noopener noreferrer">
+              <Twitter />
+                </a>
+                  ))}
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          ) : (
+            <OctagonX color="red" />
+          )}
         </div>
       );
     },
@@ -383,6 +549,33 @@ export function CompaniesDataTable({ id }: CompaniesDataTableProps) {
     webInstagram: false,
     webTwitter: false,
   });
+//   const [columnVisibility, setColumnVisibility] = React.useState<
+//   Record<string, boolean>
+// >({
+//   categoriesId: true,
+//   page: true,
+//   website: true,
+//   companyName: true,
+//   location: true,
+//   Tel: true,
+//   mail: true,
+//   address: true,
+//   totalEarning: true,
+//   hrRate: true,
+//   employees: true,
+//   LinkedIn: true,
+//   Facebook: true,
+//   Twitter: true,
+//   Instagram: true,
+//   phone_number: true,
+//   business: true,
+//   errorMessage: true,
+//   categoriesIds: true,
+//   categories: true,
+//   webFacebook: true,
+//   webInstagram: true,
+//   webTwitter: true,
+// });
   // console.log("data", pagination);
 
   const [globalFilter, setGlobalFilter] = React.useState("");
@@ -534,7 +727,7 @@ export function CompaniesDataTable({ id }: CompaniesDataTableProps) {
         </DropdownMenu>
       </div>
       <div className="rounded-md border overflow-y-auto relative">
-        <Table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <Table wrapClass="h-[76.5vh] overflow-auto custom-scrollbar" style={{ width: "100%", borderCollapse: "collapse"}}>
           <TableHeader
             className="bg-black text-white "
             style={{ position: "sticky", top: 0, zIndex: 10 }}>
@@ -544,12 +737,7 @@ export function CompaniesDataTable({ id }: CompaniesDataTableProps) {
                   return (
                     <TableHead
                       key={header.id}
-                      style={{
-                        position: "sticky",
-                        top: 0,
-                        zIndex: 10,
-                        background: "white",
-                      }}>
+                      className="sticky top-0 bg-white z-10 shadow-md"                      >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
