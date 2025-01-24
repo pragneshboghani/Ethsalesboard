@@ -1,6 +1,7 @@
   import swaggerAutogen from "swagger-autogen";
   import { developerValidationSchema } from "../validation/developerValidation.js";
   import joiToSwagger from "joi-to-swagger";
+import { DOC_CATEGORIES } from "../utils/constant.js";
 
   // Convert the Joi schema to a Swagger schema
   const { swagger: developerSchemaSwagger } = joiToSwagger(
@@ -51,6 +52,12 @@
     components: {
       schemas: {
         developerSchema: developerSchemaSwagger,
+        developerDoc:{
+          type: "object",
+          properties: {
+            message: { type: "object", example: DOC_CATEGORIES },
+          },
+        },
         errorResponse400: {
           type: "object",
           properties: {

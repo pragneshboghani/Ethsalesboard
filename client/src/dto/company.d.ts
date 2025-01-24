@@ -44,45 +44,40 @@ interface ICompanyResponse {
   totalCount: number;
 }
 
-
-export interface IDeveloper {
-  _id: string
-  firstName: string
-  lastName: string
-  email: string
-  mobileCode: string
-  mobileNumber: string
-  education: IEducation[]
-  experience: IExperience[]
-  profile: IProfile[]
-  status: string
-  createdAt: string
-  updatedAt: string
-  __v: number
-  currentPosition: string
-  expeditedSalary: string
+export interface Developer {
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobileCode: string;
+  mobileNumber: string;
+  currentPosition: string;
+  expeditedSalary: string;
+  education?: Education[];
+  experience?: Experience[];
+  profile?: Profile[];
 }
 
-export interface IEducation {
-  instituteName: string
-  degree: string
-  fieldOfStudy: string
-  startYear: string
-  endYear: string
-  _id: string
+export interface Education {
+  instituteName: string;
+  degree: string;
+  fieldOfStudy: string;
+  startYear: string;
+  endYear: string;
 }
 
-export interface IExperience {
-  companyName: string
-  jobTitle: string
-  startDate: string
-  endDate: string
-  description: string
-  _id: string
+export interface Experience {
+  companyName: string;
+  jobTitle: string;
+  startDate: string;
+  endDate: string;
+  description?: string;
+  salary?: string;
+  resignationDate?: string;
+  resignReason?: string;
+  noticePeriod?: string;
 }
 
-export interface IProfile {
-  fileName: string
-  fileURL: string
-  _id: string
+export interface Profile {
+  fileName: string;
+  fileURL: string;
 }

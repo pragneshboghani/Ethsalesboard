@@ -1,8 +1,12 @@
-import { developerValidationSchema } from "../validation/developerValidation.js";
+import {
+  developerValidationSchema,
+  documentValidationSchema,
+} from "../validation/developerValidation.js";
 import { developer } from "../utils/resMessage.js";
 import { DeveloperModel } from "../model/developer.model.js";
 import { DEVELOPER_STATUS } from "../utils/constant.js";
 import { validation } from "../utils/common.js";
+import { unlink } from "node:fs";
 
 export const addDeveloper = async (req, res) => {
   /* 
@@ -49,7 +53,7 @@ export const addDeveloper = async (req, res) => {
     }
     const data = validationResult.value;
     const developerData = await DeveloperModel.create(data);
-    
+
     return res.status(200).json({
       message: developer.newDeveloper,
       data: developerData,
@@ -121,7 +125,7 @@ export const updateDeveloperPut = async (req, res) => {
 
     if (error) {
       return res.status(400).json({
-        message: 'Validation failed',
+        message: "Validation failed",
         errors: error.details.map((detail) => detail.message),
       });
     }
@@ -134,16 +138,16 @@ export const updateDeveloperPut = async (req, res) => {
     );
 
     if (!updatedDeveloper) {
-      return res.status(404).json({ message: 'Developer not found.' });
+      return res.status(404).json({ message: "Developer not found." });
     }
 
     return res.status(200).json({
-      message: 'Developer fully updated successfully.',
+      message: "Developer fully updated successfully.",
       data: updatedDeveloper,
     });
   } catch (err) {
     return res.status(500).json({
-      message: err.message || 'An unexpected error occurred.',
+      message: err.message || "An unexpected error occurred.",
     });
   }
 };
@@ -179,7 +183,7 @@ export const updateDeveloperPatch = async (req, res) => {
 
     if (error) {
       return res.status(400).json({
-        message: 'Validation failed',
+        message: "Validation failed",
         errors: error.details.map((detail) => detail.message),
       });
     }
@@ -192,16 +196,16 @@ export const updateDeveloperPatch = async (req, res) => {
     );
 
     if (!updatedDeveloper) {
-      return res.status(404).json({ message: 'Developer not found.' });
+      return res.status(404).json({ message: "Developer not found." });
     }
 
     return res.status(200).json({
-      message: 'Developer partially updated successfully.',
+      message: "Developer partially updated successfully.",
       data: updatedDeveloper,
     });
   } catch (err) {
     return res.status(500).json({
-      message: err.message || 'An unexpected error occurred.',
+      message: err.message || "An unexpected error occurred.",
     });
   }
 };
@@ -209,6 +213,50 @@ export const updateDeveloperPatch = async (req, res) => {
 export const deleteDeveloper = async (req, res) => {
   // #swagger.tags = ['Developer']
   try {
+    return res.status(200).json({
+      message: developer.deleteDeveloper,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const developerDocument = async (req, res) => {
+  /*#swagger.tags = ['Developer']
+    #swagger.description = {
+       in: 'body',
+       description: 'Fields to update',
+       required: true,
+       schema: { 
+           $ref: '#/components/schemas/developerSchema' 
+       }
+    }
+    */
+
+  try {
+    if (req?.file?.fileName) {
+      req.body['docPath'] = `uploads/${req.file.filename}`;
+    }
+    console.log(req.body);
+    const { error, value } = documentValidationSchema.validate(req.body, {
+      abortEarly: false,
+    });
+
+    if (error) {
+      unlink(req.file.path, (err) => {
+        if (err) {
+          console.error(`Error deleting file: ${err.message}`);
+        }
+      });
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: error.details.map((detail) => detail.message),
+      });
+    }
+    console.log(req.files);
+    console.log(req.body);
     return res.status(200).json({
       message: developer.deleteDeveloper,
     });

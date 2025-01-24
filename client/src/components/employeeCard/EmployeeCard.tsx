@@ -8,13 +8,13 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { DeveloperApis } from '@/services/DeveloperApis';
-import { IDeveloper } from '@/dto/company';
+import { Developer } from '@/dto/company';
 
 
 
 const EmployeeCard: React.FC = () => {
 
-    const [employeeData, setEmployeeData] = React.useState<IDeveloper[] | []>([])
+    const [employeeData, setEmployeeData] = React.useState<Developer[] | []>([])
 
     const getEmployeeList = async () => {
         try {

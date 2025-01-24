@@ -390,6 +390,22 @@
           }
         }
       }
+    },
+    "/developer/Doc": {
+      "post": {
+        "tags": [
+          "Developer"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -522,6 +538,43 @@
           "expeditedSalary"
         ],
         "additionalProperties": false
+      },
+      "developerDoc": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "object",
+            "example": {
+              "RESUME": "Resume",
+              "COVER_LETTER": "CoverLetter",
+              "CERTIFICATES": "Certificates",
+              "COLLAGE_DOC": {
+                "name": "CollageDoc",
+                "subcategories": {
+                  "RESULT": "Result",
+                  "DEGREE": "Degree"
+                }
+              },
+              "PAST_COMPANY_DOCS": {
+                "name": "PastCompanyDocs",
+                "subcategories": {
+                  "EXPERIENCE_LETTER": "ExperienceLetter",
+                  "SALARY_SLIP": "SalarySlip",
+                  "CERTIFICATES": "Certificates"
+                }
+              },
+              "PERSONAL_DOC": {
+                "name": "PersonalDoc",
+                "subcategories": {
+                  "AADHAAR_CARD": "AadhaarCard",
+                  "PAN_CARD": "PanCard",
+                  "DRIVING_LICENSE": "DrivingLicense",
+                  "PASSPORT": "Passport"
+                }
+              }
+            }
+          }
+        }
       },
       "errorResponse400": {
         "type": "object",

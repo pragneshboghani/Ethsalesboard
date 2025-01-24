@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { DOC_CATEGORIES } from "../utils/constant";
 
 export const documentSchema = mongoose.Schema(
   {

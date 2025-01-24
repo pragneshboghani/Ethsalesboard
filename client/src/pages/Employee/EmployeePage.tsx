@@ -1,4 +1,4 @@
-import AddNewStudent from '@/components/addNewStudent/AddNewStudent'
+import DeveloperFrom from '@/components/addNewStudent/DeveloperFrom'
 import EmployeeCard from '@/components/employeeCard/EmployeeCard'
 import { Button } from '@/components/ui/button'
 import * as React from 'react'
@@ -9,7 +9,7 @@ const EmployeePage:React.FC = () => {
    <>
      <div className='mb-6 flex items-center justify-between'>
      <h1 className='text-2xl font-semibold'>employee page</h1>
-     <AddNewStudent/>
+     <DeveloperFrom/>
      </div>
      <EmployeeCard/>
 

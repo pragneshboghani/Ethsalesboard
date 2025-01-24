@@ -43,3 +43,9 @@ export const serializeQueryMaker = (obj: Record<string, any>): string => {
     .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
     .join("&");
 };
+
+export function convertToFileNameFormat(input: string) {
+  return input
+    .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space before uppercase letters
+    .replace(/^./, (str: string) => str.toUpperCase()); // Capitalize the first letter
+}
