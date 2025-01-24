@@ -45,7 +45,7 @@ const Layout: React.FC = () => {
                 <span className="mr-2">|</span>
                 <Header />
               </div>
-              <hr className="my-4 md:my-2"></hr>
+              <hr className="my-4 md:my-2 "></hr>
               <Outlet />
             </div>
           </div>

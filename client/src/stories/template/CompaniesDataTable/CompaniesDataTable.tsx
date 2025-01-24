@@ -696,7 +696,7 @@ export function CompaniesDataTable({ id }: CompaniesDataTableProps) {
   });
 
   return (
-    <div className="w-full min-h-[80%]">
+    <div className="w-full min-h-[75%]">
       <div className="flex items-center py-4">
         <Searchbar
           value={globalFilter ?? ""}

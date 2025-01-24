@@ -165,3 +165,20 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+.card-animation::before {
+  content: "";
+  @apply absolute -z-10 bottom-[-16px] left-0 bg-[#23a5662c] h-[18px] w-full scale-[1] transform origin-center transition-all duration-500 ease-in-out;
+}
+
+
+.card-animation:hover::before {
+
+@apply bottom-0 top-0 h-full
+
+  /* bottom: 0;
+   top: 0;
+   height: 100%; */
+}
+
+

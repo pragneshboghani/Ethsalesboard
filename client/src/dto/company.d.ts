@@ -43,3 +43,46 @@ interface ICompanyResponse {
   metadata: ICompany[];
   totalCount: number;
 }
+
+
+export interface IDeveloper {
+  _id: string
+  firstName: string
+  lastName: string
+  email: string
+  mobileCode: string
+  mobileNumber: string
+  education: IEducation[]
+  experience: IExperience[]
+  profile: IProfile[]
+  status: string
+  createdAt: string
+  updatedAt: string
+  __v: number
+  currentPosition: string
+  expeditedSalary: string
+}
+
+export interface IEducation {
+  instituteName: string
+  degree: string
+  fieldOfStudy: string
+  startYear: string
+  endYear: string
+  _id: string
+}
+
+export interface IExperience {
+  companyName: string
+  jobTitle: string
+  startDate: string
+  endDate: string
+  description: string
+  _id: string
+}
+
+export interface IProfile {
+  fileName: string
+  fileURL: string
+  _id: string
+}

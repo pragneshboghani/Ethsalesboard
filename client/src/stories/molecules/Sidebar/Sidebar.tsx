@@ -1,5 +1,5 @@
 import * as React from "react";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, Users } from "lucide-react";
 
 import {
   Sidebar as UISidebar,
@@ -21,11 +21,11 @@ const items = [
     url: "/",
     icon: LayoutDashboard,
   },
-  // {
-  //   title: "Companies",
-  //   url: "/companies",
-  //   icon: LayoutDashboard,
-  // },
+  {
+    title: "Employee",
+    url: "/employees",
+    icon: Users,
+  },
 ];
 
 const CustomSidebar = () => {

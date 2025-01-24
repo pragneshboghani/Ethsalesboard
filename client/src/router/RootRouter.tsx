@@ -5,6 +5,7 @@ import HomePage from "@/pages/Home/HomePage";
 import CompaniesPage from "@/pages/Companies/ConpaniesPage";
 import { RouteObject } from "react-router-dom";
 import { LayoutDashboard, Building2 } from "lucide-react";
+import EmployeePage from "@/pages/Employee/EmployeePage";
 
 export type IRoute = RouteObject & {
   path?: string;
@@ -33,6 +34,12 @@ export const routeList: IRoute[] = [
         label: "Companies",
         icon: <Building2 />,
         element: <CompaniesPage />,
+      },
+      {
+        path: "employees",
+        label: "Employees",
+        icon: <Building2 />,
+        element: <EmployeePage />,
       },
     ],
   },
