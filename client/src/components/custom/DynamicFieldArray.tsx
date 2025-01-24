@@ -31,7 +31,7 @@ const DynamicFieldArray: React.FC<FieldArrayProps> = ({ name, label }) => {
           {arrOfObjectFields?.map((key) => (
             <FormInput
               name={`${name}[${index}].${key}`}
-              label={convertToFileNameFormau(key)}
+              label={convertToFileNameFormat(key)}
             />
           ))}
           <Button onClick={() => remove(index)} className="bg-red-500 w-full">
