@@ -12,8 +12,6 @@ const EmployeePage:React.FC = () => {
      <DeveloperFrom/>
      </div>
      <EmployeeCard/>
-
-     {/* <EmployeeInfo/> */}
    </>
   )
 }

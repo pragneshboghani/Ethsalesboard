@@ -9,11 +9,12 @@ import {
 } from "@/components/ui/card";
 import { DeveloperApis } from '@/services/DeveloperApis';
 import { Developer } from '@/dto/company';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const EmployeeCard: React.FC = () => {
-
+const navigate= useNavigate()
     const [employeeData, setEmployeeData] = React.useState<Developer[] | []>([])
 
     const getEmployeeList = async () => {
@@ -56,7 +57,7 @@ const EmployeeCard: React.FC = () => {
                 {
                     employeeData.map((val, i) => (
 
-                        <Card className='border-none relative rounded-xl overflow-hidden shadow-[0px_0px_20px_rgba(0,0,0,0.2)] w-full'>
+                        <Card className='border-none relative rounded-xl overflow-hidden shadow-[0px_0px_20px_rgba(0,0,0,0.2)] w-full' onClick={()=>navigate(`${val?._id}`)}>
                             <div className='w-full absolute border h-[65px] bg-primary_background'></div>
                             <CardHeader>
                                 <div className='relative flex justify-between'>

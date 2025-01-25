@@ -31,7 +31,7 @@ const FormInput: React.FC<FormInputProps> = ({
         type={type}
         placeholder={placeholder}
         {...register(name)}
-        className={`w-full ${errors[name] ? "border-red-500" : ""}`}
+        className={`w-full border-gray-400 ${errors[name] ? "border-red-500" : ""}`}
       />
       {errors[name] && (
         <p className="text-red-500 text-sm">{String(errors[name]?.message)}</p>

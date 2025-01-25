@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Copy } from "lucide-react";
+import { BriefcaseBusiness, Copy, GraduationCap, Puzzle, PuzzleIcon, UserRoundPen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,8 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label, SelectGroup, SelectLabel } from "@radix-ui/react-select";
+import { SelectGroup } from "@radix-ui/react-select";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 // import { Developer } from "@/dto/company";
@@ -29,7 +28,7 @@ const developerValidationSchema = yup.object({
   firstName: yup.string().required("First name is required"),
   lastName: yup.string().required("Last name is required"),
   email: yup
-    .string()
+    .string() 
     .email("Invalid email format")
     .required("Email is required"),
   mobileCode: yup.string().required("Mobile code is required"),
@@ -136,18 +135,19 @@ const AddNewStudent: React.FC = () => {
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="sm:max-w-lg w-[90%] h-[90%] sm:h-auto overflow-hidden sm:rounded-lg"
+        className="sm:max-w-screen-xl h-[90%] sm:h-auto overflow-hidden sm:rounded-lg"
         style={{
           maxHeight: "90vh", // Prevents the dialog from exceeding viewport height
         }}>
         <DialogHeader>
-          <DialogTitle className="mb-3 text-lg sm:text-xl">
+          <DialogTitle className="mb-3 text-primary_background shadow-md flex items-center border-b-2 border-[#23a5669d] min-h-[52px] px-4 text-lg sm:text-xl ">
             Add New Developer
           </DialogTitle>
           <SelectGroup className="flex flex-col gap-4">
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <div className="max-h-[50vh] sm:max-h-[60vh] overflow-auto space-y-4">
+                <div className="max-h-[50vh] sm:max-h-[60vh] overflow-auto space-y-4 custom-scrollbar">
+                  <div className="grid grid-cols-2 gap-5  p-4 pb-0">
                   <FormInput name="firstName" label="First Name" />
                   <FormInput name="lastName" label="Last Name" />
                   <FormInput name="email" label="Email" type="email" />
@@ -155,17 +155,22 @@ const AddNewStudent: React.FC = () => {
                   <FormInput name="mobileNumber" label="Mobile Number" />
                   <FormInput name="currentPosition" label="Current Position" />
                   <FormInput name="expeditedSalary" label="Expedited Salary" />
+                  </div>
 
-                  <DynamicFieldArray name="education" label="Education" />
-                  <DynamicFieldArray name="experience" label="Experience" />
-                  <DynamicFieldArray name="profile" label="Profile" />
+                  <div className="p-4 flex flex-col gap-5 mt-0">
+                  <DynamicFieldArray name="education" icon={<GraduationCap color="green"/> }label="Education" />
+                  <DynamicFieldArray name="experience" label="Experience" icon={<BriefcaseBusiness  color="green"/> }/>
+                  <DynamicFieldArray name="profile" label="Profile"  icon={<UserRoundPen color="green"/> } />
+                  </div>
                 </div>
-
+                
+                <div className=" mt-4 w-full max-w-80 mx-auto">
                 <Button
-                  className="bg-primary_background border-none outline-none py-5 mt-4 w-full"
+                  className="  border bg-primary_background outline-none py-5 w-full"
                   type="submit">
                   Add New
                 </Button>
+                </div>
               </form>
             </FormProvider>
           </SelectGroup>

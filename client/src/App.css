@@ -60,3 +60,6 @@
   background-color: rgb(35, 156, 104);
 }
 
+.employee-personal-data div:nth-child(even){
+  background-color:#23a56636
+}
