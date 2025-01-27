@@ -64,6 +64,11 @@ app.use((err, req, res, next) => {
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+app.get("/download/:filename", (req, res) => {
+  const fileName = req.params.filename;
+  const filePath = path.join(__dirname, "uploads", fileName);
+  res.download(filePath); // Triggers the download of the file
+});
 
 // API Routes
 app.use("/api", routes);

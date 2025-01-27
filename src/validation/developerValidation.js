@@ -44,13 +44,7 @@ export const developerValidationSchema = Joi.object({
 //document
 
 // Extracting valid categories and subcategories from DOC_CATEGORIES
-const docCategories = Object.values(DOC_CATEGORIES).map((cat) =>
-  typeof cat === "object" ? cat.name : cat
-);
-
-const docSubCategories = Object.values(DOC_CATEGORIES)
-  .filter((cat) => typeof cat === "object")
-  .flatMap((cat) => Object.values(cat.subcategories));
+const docCategories = DOC_CATEGORIES.map((cat) => cat.categoriesKey);
 
 export const documentValidationSchema = Joi.object({
   developerId: Joi.string()
@@ -61,13 +55,10 @@ export const documentValidationSchema = Joi.object({
       "any.required": "developerId is required.",
     }),
 
-  docPath: Joi.string().uri().required(),
+  docPath: Joi.string().required(),
 
   docCategory: Joi.string()
     .valid(...docCategories)
     .required(),
-
-  docSubCategory: Joi.string()
-    .valid(...docSubCategories)
-    .required(), 
+  note: Joi.string().required(),
 });

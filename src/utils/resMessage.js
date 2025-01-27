@@ -8,6 +8,7 @@ const developer = {
     fetchDeveloperData: "Fetch developer details successfully",
     editDeveloper: "Modify developer details successfully",
     deleteDeveloper: "Delete developer successfully",
+    uploadDoc: "Uploaded Docs successfully",
 }
 
 const company = {

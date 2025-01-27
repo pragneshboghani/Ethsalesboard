@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { DOC_CATEGORIES } from "../utils/constant";
+import { DOC_CATEGORIES } from "../utils/constant.js";
 
 export const documentSchema = mongoose.Schema(
   {
@@ -15,16 +15,11 @@ export const documentSchema = mongoose.Schema(
     },
     docCategory: {
       type: String,
-      enum: Object.values(DOC_CATEGORIES).map((cat) =>
-        typeof cat === "object" ? cat.name : cat
-      ),
+      enum: DOC_CATEGORIES.map((cat) => cat.categoriesKey),
       required: true,
     },
-    docSubCategory: {
+    note: {
       type: String,
-      enum: Object.values(DOC_CATEGORIES)
-        .filter((cat) => typeof cat === "object")
-        .flatMap((cat) => Object.values(cat.subcategories)),
     },
   },
   {

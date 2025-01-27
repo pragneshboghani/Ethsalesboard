@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { Checkbox } from "@/components/ui/checkbox";
 import test from "node:test";
+import { fetchDevelopers } from "@/redux/slices/developerSlice";
 
 const Layout: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -31,6 +32,7 @@ const Layout: React.FC = () => {
 
   React.useEffect(() => {
     dispatch(fetchDashboardData());
+    dispatch(fetchDevelopers());
   }, []);
 
   return (

@@ -142,7 +142,7 @@ export const getCategoriesList = async (req, res) => {
                 1,
                 0,
               ],
-            }, // Count where fieldN is true
+            },
           },
           failureCount: {
             $sum: {
@@ -199,23 +199,14 @@ export const getCategoriesList = async (req, res) => {
         },
       },
       {
-        $sort:
-          /**
-           * Provide any number of field/order pairs.
-           */
-          {
-            priority: 1,
-          },
+        $sort: {
+          priority: 1,
+        },
       },
       {
-        $project:
-          /**
-           * specifications: The fields to
-           *   include or exclude.
-           */
-          {
-            priority: 0,
-          },
+        $project: {
+          priority: 0,
+        },
       },
     ]);
     return res.status(200).json({
@@ -240,7 +231,7 @@ export const getCompanyList = async (req, res) => {
       isError: { $exists: true, $eq: false },
     };
     if (searchString) {
-      match["$text"] = { $search: searchString } ;
+      match["$text"] = { $search: searchString };
     }
     if (categoriesId) {
       match.categoriesIds = {
@@ -311,7 +302,7 @@ export const getCompanyList = async (req, res) => {
       },
     ]);
 
-    return res.   status(200).json({
+    return res.status(200).json({
       message: company.fetchCompanyList,
       data: companyList[0],
     });

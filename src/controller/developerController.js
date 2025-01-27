@@ -7,6 +7,8 @@ import { DeveloperModel } from "../model/developer.model.js";
 import { DEVELOPER_STATUS } from "../utils/constant.js";
 import { validation } from "../utils/common.js";
 import { unlink } from "node:fs";
+import { DOCModel } from "../model/document.model.js";
+import mongoose from "mongoose";
 
 export const addDeveloper = async (req, res) => {
   /* 
@@ -41,18 +43,20 @@ export const addDeveloper = async (req, res) => {
 */
 
   try {
-    const validationResult = validation.validateParamsWithJoi(
-      req.body,
-      developerValidationSchema
-    );
+    // const validationResult = validation.validateParamsWithJoi(
+    //   req.body,
+    //   developerValidationSchema
+    // );
 
-    if (!validationResult.isValid) {
+    const { error, value } = developerValidationSchema.validate(req?.body);
+
+    if (error) {
       return res.status(400).json({
-        message: validationResult.message,
+        message: "Validation failed",
+        errors: error.details.map((detail) => detail.message),
       });
     }
-    const data = validationResult.value;
-    const developerData = await DeveloperModel.create(data);
+    const developerData = await DeveloperModel.create(value);
 
     return res.status(200).json({
       message: developer.newDeveloper,
@@ -68,7 +72,68 @@ export const addDeveloper = async (req, res) => {
 export const getDeveloperList = async (req, res) => {
   // #swagger.tags = ['Developer']
   try {
-    const developerList = await DeveloperModel.find();
+    const developerList = await DeveloperModel.aggregate([
+      {
+        $lookup: {
+          from: "documents",
+          // The collection to join (documents)
+          let: {
+            developerId: "$_id",
+          },
+          // Declare the variable for the developerId in the current document
+          pipeline: [
+            {
+              // Step 2: Use the variable (developerId) to filter documents for the current developer
+              $match: {
+                $expr: {
+                  $eq: ["$developerId", "$$developerId"],
+                },
+              },
+            },
+            {
+              // Step 3: Group the documents by docCategory
+              $group: {
+                _id: "$docCategory",
+                // Group by docCategory
+                documents: {
+                  $push: "$$ROOT",
+                }, // Push the whole document into the documents array
+              },
+            },
+            {
+              $sort: {
+                _id: -1,
+              },
+            },
+          ],
+          as: "developerDocs", // The result will be stored in the developerDocs array
+        },
+      },
+      {
+        $addFields: {
+          documents: {
+            $arrayToObject: [
+              {
+                // This converts the developerDocs array of objects to key-value pairs
+                $map: {
+                  input: "$developerDocs",
+                  as: "doc",
+                  in: {
+                    k: "$$doc._id",
+                    v: "$$doc.documents", // Value is the documents array for that category
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+      {
+        $project: {
+          developerDocs: 0,
+        },
+      },
+    ]);
     return res.status(200).json({
       message: developer.fetchDeveloperList,
       data: developerList,
@@ -83,10 +148,76 @@ export const getDeveloperList = async (req, res) => {
 export const getDeveloperProfile = async (req, res) => {
   // #swagger.tags = ['Developer']
   try {
-    const developerDetails = await DeveloperModel.find();
+    const developerProfile = await DeveloperModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(req?.params?.id),
+        },
+      },
+      {
+        $lookup: {
+          from: "documents",
+          // The collection to join (documents)
+          let: {
+            developerId: "$_id",
+          },
+          // Declare the variable for the developerId in the current document
+          pipeline: [
+            {
+              // Step 2: Use the variable (developerId) to filter documents for the current developer
+              $match: {
+                $expr: {
+                  $eq: ["$developerId", "$$developerId"],
+                },
+              },
+            },
+            {
+              // Step 3: Group the documents by docCategory
+              $group: {
+                _id: "$docCategory",
+                // Group by docCategory
+                documents: {
+                  $push: "$$ROOT",
+                }, // Push the whole document into the documents array
+              },
+            },
+            {
+              $sort: {
+                _id: -1,
+              },
+            },
+          ],
+          as: "developerDocs", // The result will be stored in the developerDocs array
+        },
+      },
+      {
+        $addFields: {
+          documents: {
+            $arrayToObject: [
+              {
+                // This converts the developerDocs array of objects to key-value pairs
+                $map: {
+                  input: "$developerDocs",
+                  as: "doc",
+                  in: {
+                    k: "$$doc._id",
+                    v: "$$doc.documents", // Value is the documents array for that category
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+      {
+        $project: {
+          developerDocs: 0,
+        },
+      },
+    ]);
     return res.status(200).json({
       message: developer.fetchDeveloperData,
-      data: developerDetails,
+      data: developerProfile[0],
     });
   } catch (error) {
     return res.status(500).json({
@@ -236,11 +367,15 @@ export const developerDocument = async (req, res) => {
     */
 
   try {
+    const customObject = {
+      ...req.body,
+      docPath: `/uploads/${req.file.filename}`,
+    };
     if (req?.file?.fileName) {
-      req.body['docPath'] = `uploads/${req.file.filename}`;
+      req.body["docPath"] = `uploads/${req.file.filename}`;
     }
-    console.log(req.body);
-    const { error, value } = documentValidationSchema.validate(req.body, {
+    console.log(customObject);
+    const { error, value } = documentValidationSchema.validate(customObject, {
       abortEarly: false,
     });
 
@@ -255,10 +390,81 @@ export const developerDocument = async (req, res) => {
         errors: error.details.map((detail) => detail.message),
       });
     }
-    console.log(req.files);
-    console.log(req.body);
+
+    const developerDocs = await DOCModel.create(value);
+
+    // console.log(req.files);
+    // console.log(req.body);
+    const developerProfile = await DeveloperModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(developerDocs?.developerId),
+        },
+      },
+      {
+        $lookup: {
+          from: "documents",
+          // The collection to join (documents)
+          let: {
+            developerId: "$_id",
+          },
+          // Declare the variable for the developerId in the current document
+          pipeline: [
+            {
+              // Step 2: Use the variable (developerId) to filter documents for the current developer
+              $match: {
+                $expr: {
+                  $eq: ["$developerId", "$$developerId"],
+                },
+              },
+            },
+            {
+              // Step 3: Group the documents by docCategory
+              $group: {
+                _id: "$docCategory",
+                // Group by docCategory
+                documents: {
+                  $push: "$$ROOT",
+                }, // Push the whole document into the documents array
+              },
+            },
+            {
+              $sort: {
+                _id: -1,
+              },
+            },
+          ],
+          as: "developerDocs", // The result will be stored in the developerDocs array
+        },
+      },
+      {
+        $addFields: {
+          documents: {
+            $arrayToObject: [
+              {
+                // This converts the developerDocs array of objects to key-value pairs
+                $map: {
+                  input: "$developerDocs",
+                  as: "doc",
+                  in: {
+                    k: "$$doc._id",
+                    v: "$$doc.documents", // Value is the documents array for that category
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+      {
+        $project: {
+          developerDocs: 0,
+        },
+      },
+    ]);
     return res.status(200).json({
-      message: developer.deleteDeveloper,
+      message: developer.uploadDoc,
+      data: developerProfile[0],
     });
   } catch (error) {
     return res.status(500).json({

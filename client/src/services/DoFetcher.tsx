@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseURL } from "@/config/config";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { setupCache } from "axios-cache-interceptor";
 // import { getCookie } from "cookies-next";
-
 interface IRequestMethods {
   GET: string;
   POST: string;
@@ -12,7 +12,9 @@ interface IRequestMethods {
 
 const instance: AxiosInstance = axios.create();
 
-instance.interceptors.response.use(
+const instanc = setupCache(instance);
+
+instanc.interceptors.response.use(
   (res) => res?.data,
   (error) => {
     if (error?.response?.data) {
@@ -81,5 +83,5 @@ export const doFetch = (url: string, reqDetails: any = defaultReqDetails) => {
     options.data = body;
   }
 
-  return instance(options);
+  return instanc(options);
 };

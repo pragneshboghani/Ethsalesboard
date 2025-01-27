@@ -4,6 +4,7 @@ import {
   deleteDeveloper,
   developerDocument,
   getDeveloperList,
+  getDeveloperProfile,
   updateDeveloperPatch,
   updateDeveloperPut,
 } from "../controller/developerController.js";
@@ -13,6 +14,7 @@ const route = express.Router();
 route.post("/", addDeveloper);
 
 route.get("/developerList", getDeveloperList);
+route.get("/developerProfile/:id", getDeveloperProfile);
 
 route.put("/:id", updateDeveloperPut);
 route.patch("/:id", updateDeveloperPatch);

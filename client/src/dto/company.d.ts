@@ -40,11 +40,13 @@ interface ICompanyState {
   categoriesId: string | null;
 }
 interface ICompanyResponse {
+  _id: any;
   metadata: ICompany[];
   totalCount: number;
 }
 
 export interface Developer {
+  _id?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -55,6 +57,10 @@ export interface Developer {
   education?: Education[];
   experience?: Experience[];
   profile?: Profile[];
+  documents?: IDocuments;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Education {
@@ -80,4 +86,24 @@ export interface Experience {
 export interface Profile {
   fileName: string;
   fileURL: string;
+}
+
+export interface IDocument {
+  _id: string;
+  developerId: string;
+  docPath: string;
+  docCategory: string;
+  note: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface IDocuments {
+  CERTIFICATES: Array<IDocument>;
+  RESUME: Array<IDocument>;
+  COLLAGE_DOC: Array<IDocument>;
+  PAST_COMPANY_DOCS: Array<IDocument>;
+  PERSONAL_DOC: Array<IDocument>;
+  COVER_LETTER: Array<IDocument>;
 }

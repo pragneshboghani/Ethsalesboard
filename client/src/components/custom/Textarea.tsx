@@ -2,21 +2,20 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import { Textarea } from "../ui/textarea";
 
 interface FormInputProps {
   name: string;
   label: string;
   type?: string;
   placeholder?: string;
-  isRequire?: Boolean;
 }
 
-const FormInput: React.FC<FormInputProps> = ({
+const FormTextArea: React.FC<FormInputProps> = ({
   name,
   label,
   type = "text",
   placeholder,
-  isRequire,
 }) => {
   const {
     register,
@@ -25,13 +24,9 @@ const FormInput: React.FC<FormInputProps> = ({
 
   return (
     <div className="space-y-1">
-      <Label className="font-semibold text-base">
-        {label}
-        {isRequire && <span className="text-red-500 ml-1">*</span>}
-      </Label>
-      <Input
+      <Label className="font-semibold text-base">{label}</Label>
+      <Textarea
         id={name}
-        type={type}
         placeholder={placeholder}
         {...register(name)}
         className={`w-full border-gray-400 ${
@@ -45,4 +40,4 @@ const FormInput: React.FC<FormInputProps> = ({
   );
 };
 
-export default FormInput;
+export default FormTextArea;

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { CompanyApis } from "@/services/CompanyApis";
+import { ICompanyResponse, ICompanyState } from "@/dto/company";
 
 // Initial state
 const initialState: ICompanyState = {
@@ -31,6 +32,7 @@ export const fetchCompanies = createAsyncThunk<
       });
       // console.log("response", response);
       return {
+        _id: response.data._id || '',
         metadata: response.data.metadata || [],
         totalCount: response.data.totalCount || 0,
       };
@@ -67,7 +69,8 @@ const companySlice = createSlice({
           state.loading = false;
           state.error = null;
           state.totalCount = action.payload.totalCount;
-          state.companies = [...state.companies, ...action.payload.metadata];
+          state.companies = action.payload.metadata;
+          // state.companies = [...state.companies, ...action.payload.metadata];
         }
       )
       .addCase(fetchCompanies.rejected, (state, action) => {

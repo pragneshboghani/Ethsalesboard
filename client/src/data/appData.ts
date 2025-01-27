@@ -1,18 +1,9 @@
-export const DEVELOPER_STATUS = {
-  REGISTERED: "Registered",
-  ACTIVE: "Active",
-  INACTIVE: "Inactive",
-  DELETED: "Deleted",
-};
+export interface IDocCategories {
+  categoriesName: string;
+  categoriesKey: string;
+}
 
-export const COMPANY_STATUS = {
-  REGISTERED: "Registered",
-  ACTIVE: "Active",
-  INACTIVE: "Inactive",
-  DELETED: "Deleted",
-};
-
-export const DOC_CATEGORIES = [
+export const DOC_CATEGORIES: IDocCategories[] = [
   {
     categoriesName: "Resume",
     categoriesKey: "RESUME",
