@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import dashboardReducer from "./slices/dashboardSlice";
 import companyReducer from "./slices/companySlice";
 import developerReducer from "./slices/developerSlice";
+import mailReducer from "./slices/mailSlice";
 
 // Configure the Redux store
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     dashboard: dashboardReducer,
     company: companyReducer,
     developer: developerReducer,
+    mailTemplates: mailReducer,
   },
 });
 

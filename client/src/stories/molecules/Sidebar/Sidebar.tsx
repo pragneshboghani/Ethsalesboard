@@ -1,5 +1,5 @@
 import * as React from "react";
-import { LayoutDashboard, Users } from "lucide-react";
+import { LayoutDashboard, Mails, Users } from "lucide-react";
 
 import {
   Sidebar as UISidebar,
@@ -26,6 +26,11 @@ const items = [
     url: "/employees",
     icon: Users,
   },
+  {
+    title: "Email Templates",
+    url: "/email-templates",
+    icon: Mails,
+  },
 ];
 
 const CustomSidebar = () => {
@@ -49,7 +54,7 @@ const CustomSidebar = () => {
                 <SidebarMenuItem key={item.title} className="flex items-center">
                   <SidebarMenuButton asChild>
                     <div
-                      className="cursor-pointer flex justify-center font-bold"
+                      className="cursor-pointer flex justify-start font-bold"
                       onClick={() => navigate(item.url)}>
                       <item.icon />
                       <span>{item.title}</span>

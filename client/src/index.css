@@ -164,6 +164,22 @@ button:focus-visible {
   body {
     @apply bg-background text-foreground;
   }
+  #root {
+    @apply m-4 md:m-16;
+  }
+
+  #root .ql-container {
+    @apply rounded-b-lg bg-custom-light w-full;
+    min-height: 300px;
+  }
+
+  #root .ql-snow.ql-toolbar {
+    @apply block bg-custom-gray rounded-t-lg;
+  }
+
+  #root .ql-editor {
+    min-height: 18em; /* Use arbitrary styling here */
+  }
 }
 
 .card-animation::before {
@@ -171,14 +187,43 @@ button:focus-visible {
   @apply absolute -z-10 bottom-[-16px] left-0 bg-[#23a5662c] h-[18px] w-full scale-[1] transform origin-center transition-all duration-500 ease-in-out;
 }
 
-
 .card-animation:hover::before {
-
-@apply bottom-0 top-0 h-full
+  @apply bottom-0 top-0 h-full
 
   /* bottom: 0;
    top: 0;
-   height: 100%; */
+   height: 100%; */;
 }
 
+/* quill */
 
+#root {
+  margin: 1rem 4rem;
+}
+
+.ql-container {
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  background: #fefcfc;
+  width: 100%;
+  min-height: 200px;
+}
+
+/* Snow Theme */
+.ql-snow.ql-toolbar {
+  display: block;
+  background: #eaecec;
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+}
+.ql-editor {
+  min-height: 18em;
+}
+
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+.prose li {
+  margin-bottom: 0.5rem;
+}

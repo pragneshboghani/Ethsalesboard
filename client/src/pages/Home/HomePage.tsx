@@ -1,4 +1,4 @@
-  import Button from "@/stories/atoms/Button/Button";
+import Button from "@/stories/atoms/Button/Button";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
     <>
       {/* Main Title */}
       <h2 className="text-3xl flex items-center gap-1 font-bold text-gray-800 mb-6">
-      <ChartNoAxesCombined className="stroke-[2.5]"/> Data Overview
+        <ChartNoAxesCombined className="stroke-[2.5]" /> Data Overview
       </h2>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {data?.map(
@@ -61,18 +61,17 @@ const HomePage: React.FC = () => {
                   </div>
                   <div
                     className={`rounded-lg px-3 py-2 text-sm flex items-center justify-center gap-1 font-bold max-h-fit ${statusColors.failure}`}>
-                    <Ban width={20}/> Failed:{" "}
+                    <Ban width={20} /> Failed:{" "}
                     <span className="text-red-900">{failureCount}</span>
                   </div>
                   <div
                     className={`rounded-lg px-3 py-2 col-span-2 text-sm flex items-center justify-center gap-1 font-bold max-h-fit ${statusColors.noField}`}>
-                    <BadgeInfo width={18} color="#e6a700"/> No Field:{" "}
+                    <BadgeInfo width={18} color="#e6a700" /> No Field:{" "}
                     <span className="text-gray-900">{noFieldCount}</span>
                   </div>
                 </div>
               </CardContent>
               {/* <div className="flex items-center justify-center absolute w-[800px] h-[200px] overflow-hidden top-[210px] left-[-50px] -z-10 bg-[#23a56657] rounded-none rotate-[6deg]"></div> */}
-
             </Card>
           )
         )}
