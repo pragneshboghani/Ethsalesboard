@@ -3,6 +3,9 @@ import { setPagination } from "../utils/common.js";
 import { company } from "../utils/resMessage.js";
 import { COMPANY_STATUS } from "../utils/constant.js";
 import mongoose from "mongoose";
+import xl  from "excel4node";
+const wb = new xl.Workbook();
+const ws = wb.addWorksheet("just-test");
 
 export const getCategoryIdList = async (req, res) => {
   // #swagger.tags = ['Company']
@@ -22,7 +25,7 @@ export const getCategoryIdList = async (req, res) => {
             $sum: {
               $cond: [
                 {
-                  $eq: ["$isError", true],
+                $eq: ["$isError", true],
                 },
                 1,
                 0,
@@ -33,7 +36,7 @@ export const getCategoryIdList = async (req, res) => {
             $sum: {
               $cond: [
                 {
-                  $eq: ["$isError", false],
+                $eq: ["$isError", false],
                 },
                 1,
                 0,
@@ -44,7 +47,7 @@ export const getCategoryIdList = async (req, res) => {
             $sum: {
               $cond: [
                 {
-                  $not: ["$isError"],
+                $not: ["$isError"],
                 },
                 1,
                 0,
@@ -60,11 +63,11 @@ export const getCategoryIdList = async (req, res) => {
           foreignField: "_id",
           pipeline: [
             {
-              $project: {
-                __v: 0,
-                href: 0,
-                _id: 0,
-              },
+            $project: {
+              __v: 0,
+              href: 0,
+              _id: 0,
+            },
             },
           ],
           as: "category",
@@ -85,22 +88,22 @@ export const getCategoryIdList = async (req, res) => {
       },
       {
         $sort:
-          /**
-           * Provide any number of field/order pairs.
-           */
-          {
-            priority: 1,
-          },
+        /**
+         * Provide any number of field/order pairs.
+         */
+        {
+          priority: 1,
+        },
       },
       {
         $project:
-          /**
-           * specifications: The fields to
-           *   include or exclude.
-           */
-          {
-            priority: 0,
-          },
+        /**
+         * specifications: The fields to
+         *   include or exclude.
+         */
+        {
+          priority: 0,
+        },
       },
     ]);
     return res.status(200).json({
@@ -137,7 +140,7 @@ export const getCategoriesList = async (req, res) => {
             $sum: {
               $cond: [
                 {
-                  $eq: ["$isError", true],
+                $eq: ["$isError", true],
                 },
                 1,
                 0,
@@ -148,7 +151,7 @@ export const getCategoriesList = async (req, res) => {
             $sum: {
               $cond: [
                 {
-                  $eq: ["$isError", false],
+                $eq: ["$isError", false],
                 },
                 1,
                 0,
@@ -159,7 +162,7 @@ export const getCategoriesList = async (req, res) => {
             $sum: {
               $cond: [
                 {
-                  $not: ["$isError"],
+                $not: ["$isError"],
                 },
                 1,
                 0,
@@ -175,11 +178,11 @@ export const getCategoriesList = async (req, res) => {
           foreignField: "_id",
           pipeline: [
             {
-              $project: {
-                __v: 0,
-                href: 0,
-                _id: 0,
-              },
+            $project: {
+              __v: 0,
+              href: 0,
+              _id: 0,
+            },
             },
           ],
           as: "category",
@@ -267,12 +270,12 @@ export const getCompanyList = async (req, res) => {
                 foreignField: "_id",
                 pipeline: [
                   {
-                    $project: {
-                      __v: 0,
-                      href: 0,
-                      priority: 0,
-                      _id: 0,
-                    },
+                  $project: {
+                    __v: 0,
+                    href: 0,
+                    priority: 0,
+                    _id: 0,
+                  },
                   },
                 ],
                 as: "categories",
@@ -288,7 +291,7 @@ export const getCompanyList = async (req, res) => {
           ],
           totalCount: [
             {
-              $count: "count",
+            $count: "count",
             },
           ],
         },
@@ -317,12 +320,7 @@ export const createCompanyListFile = async (req, res) => {
   // #swagger.tags = ['Company']
 
   try {
-    const companyList = await CompanyModel.find().limit(10);
-
-    return res.status(200).json({
-      message: company.fetchCompanyList,
-      data: companyList[0],
-    });
+    const companyList = await CompanyModel.find().select('index page companyName profileLink websiteLink totalEarning hrRate employees location LinkedIn Facebook Twitter Instagram address website phone_number business isMailSend ').limit(10);
 
     // const companyList = await CompanyModel.aggregate([
     //   {
@@ -331,11 +329,59 @@ export const createCompanyListFile = async (req, res) => {
     //     },
     //   },
     // ]);
+
+    const headingColumnNames = [
+      "index",
+      "page",
+      "companyName",
+      "profileLink",
+      "websiteLink",
+      "totalEarning",
+      "hrRate",
+      "employees",
+      "location",
+      "LinkedIn",
+      "Facebook",
+      "Twitter",
+      "Instagram",
+      "address",
+      "website",
+      "phone_number",
+      "business",
+      "isMailSend",
+    ];
+
+    let headingColumnIndex = 1;
+    headingColumnNames.forEach(heading => {
+      ws.cell(1, headingColumnIndex++).string(heading)
+    })
+
+    let rowIndex = 2;
+    businesses[0]?.businesses.forEach((record) => {
+      let columnIndex = 1;
+      Object.keys(record).forEach((columnName) => {
+        const cellValue = record[columnName];
+        if (typeof cellValue === "object") {
+          ws.cell(rowIndex, columnIndex++).string(JSON.stringify(cellValue));
+        } else if (typeof cellValue === "number") {
+          ws.cell(rowIndex, columnIndex++).number(cellValue);
+        } else if (cellValue === null || cellValue === undefined) {
+          ws.cell(rowIndex, columnIndex++).string("");
+        } else {
+          ws.cell(rowIndex, columnIndex++).string(cellValue.toString());
+        }
+      });
+      rowIndex++;
+    });
+
+    wb.write("company-list.xlsx");
+
     //  create csv or excel file for business list
-    // return res.success({
-    //   message: company.createCompanyListFile,
-    //   date: companyList,
-    // });
+    return res.success({
+      message: company.fetchCompanyList,
+      date: companyList,
+    });
+
   } catch (error) {
     return res.internalServerError({
       message: error.message,
