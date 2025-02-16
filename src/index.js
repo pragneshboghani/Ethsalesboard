@@ -1,13 +1,14 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import fs from "fs";
 import bodyParser from "body-parser";
 import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "./swagger/swagger-output.json" assert { type: "json" };
+// import swaggerDocument from "./swagger/swagger-output.json" assert { type: "json" };
 import { connectMongo } from "./config/dbConnection.js";
 import routes from "./routes/index.routes.js";
 import { globalErrorHandler } from "./utils/common.js";
-
+const swaggerDocument =await JSON.parse(fs.readFileSync("./src/swagger/swagger-output.json", "utf-8"));
 const app = express();
 const port = process.env.PORT ?? 3101;
 
